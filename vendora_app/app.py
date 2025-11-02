@@ -32,7 +32,7 @@ def create_app():
     
     from vendora_app.blueprints.auth.models import User
     from vendora_app.blueprints.vendor.models import Vendor
-    
+    from vendora_app.blueprints.customer.models import Customer
     
     
     @login_manager.user_loader

@@ -1,112 +1,85 @@
 {% extends "base.html" %}
-
 {% block title %}Vendor Dashboard{% endblock %}
 
-{% block head_content %}
-<!-- Page-specific head content -->
-{% endblock %}
-
 {% block content %}
-<div class="bg-gray-100 min-h-screen py-8">
-    <div class="container mx-auto max-w-5xl px-4">
-        <h1 class="text-3xl font-semibold text-gray-800 mb-8 text-center">Vendor Dashboard</h1>
+<div class="bg-gray-100 min-h-screen py-10">
+    <div class="container mx-auto max-w-4xl px-4">
+        <!-- Header Section -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-semibold text-gray-900 mb-2">{{ current_user.vendor_profile.shop_name
+                }}
+            </h1>
+            <p class="text-gray-600">Business Address: {{ current_user.vendor_profile.business_address }}</p>
+        </div>
 
-        <!-- Dashboard Grid -->
+        <!-- Dashboard Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Card 1 -->
+            <!-- Card Template -->
             <a href="{{ url_for('vendor.edit_business') }}"
-                class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition duration-300 block">
-                <div class="flex items-center space-x-4">
-                    <div class="bg-blue-100 p-3 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-700" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11 17h2m-1-1v-4m0 0l-2 2m2-2l2 2m4-10h3m-3 0v3m0-3L3 21" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-800">Edit Business Details</h2>
-                        <p class="text-gray-500 text-sm">Update your store info, services, and hours</p>
-                    </div>
+                class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-start">
+                <div class="flex items-center justify-center bg-blue-50 text-blue-700 rounded-xl p-3 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M11 17h2m-1-1v-4m0 0l-2 2m2-2l2 2m4-10h3m-3 0v3m0-3L3 21" />
+                    </svg>
                 </div>
+                <h2 class="text-lg font-semibold text-gray-800 mb-1">Edit Business Details</h2>
+                <p class="text-gray-500 text-sm">Update your store info, services, and working hours</p>
             </a>
 
-            <!-- Card 2 -->
             <a href="{{ url_for('vendor.appointments') }}"
-                class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition duration-300 block">
-                <div class="flex items-center space-x-4">
-                    <div class="bg-blue-100 p-3 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-700" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-800">Appointments</h2>
-                        <p class="text-gray-500 text-sm">View and manage customer bookings</p>
-                    </div>
+                class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-start">
+                <div class="flex items-center justify-center bg-blue-50 text-blue-700 rounded-xl p-3 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z" />
+                    </svg>
                 </div>
+                <h2 class="text-lg font-semibold text-gray-800 mb-1">Appointments</h2>
+                <p class="text-gray-500 text-sm">View and manage customer bookings easily</p>
             </a>
 
-            <!-- Card 3 -->
             <a href="{{ url_for('vendor.analytics') }}"
-                class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition duration-300 block">
-                <div class="flex items-center space-x-4">
-                    <div class="bg-blue-100 p-3 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-700" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M9 17v-6m4 6v-4m4 4V7m2-4H5a2 2 0 00-2 2v16a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-800">Analytics</h2>
-                        <p class="text-gray-500 text-sm">Track your business performance</p>
-                    </div>
+                class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-start">
+                <div class="flex items-center justify-center bg-blue-50 text-blue-700 rounded-xl p-3 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 17v-6m4 6v-4m4 4V7m2-4H5a2 2 0 00-2 2v16a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z" />
+                    </svg>
                 </div>
+                <h2 class="text-lg font-semibold text-gray-800 mb-1">Analytics</h2>
+                <p class="text-gray-500 text-sm">Track your performance and insights</p>
             </a>
 
-            <!-- Card 4 -->
             <a href="{{ url_for('vendor.reviews') }}"
-                class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition duration-300 block">
-                <div class="flex items-center space-x-4">
-                    <div class="bg-blue-100 p-3 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-700" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.905c.969 0 1.372 1.24.588 1.81l-3.975 2.89a1 1 0 00-.364 1.118l1.518 4.674c.3.922-.755 1.688-1.54 1.118l-3.974-2.89a1 1 0 00-1.176 0l-3.974 2.89c-.785.57-1.84-.196-1.54-1.118l1.518-4.674a1 1 0 00-.364-1.118l-3.975-2.89c-.784-.57-.38-1.81.589-1.81h4.905a1 1 0 00.95-.69l1.519-4.674z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-800">Customer Reviews</h2>
-                        <p class="text-gray-500 text-sm">See and respond to customer feedback</p>
-                    </div>
+                class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-start">
+                <div class="flex items-center justify-center bg-blue-50 text-blue-700 rounded-xl p-3 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.905c.969 0 1.372 1.24.588 1.81l-3.975 2.89a1 1 0 00-.364 1.118l1.518 4.674c.3.922-.755 1.688-1.54 1.118l-3.974-2.89a1 1 0 00-1.176 0l-3.974 2.89c-.785.57-1.84-.196-1.54-1.118l1.518-4.674a1 1 0 00-.364-1.118l-3.975-2.89c-.784-.57-.38-1.81.589-1.81h4.905a1 1 0 00.95-.69l1.519-4.674z" />
+                    </svg>
                 </div>
+                <h2 class="text-lg font-semibold text-gray-800 mb-1">Customer Reviews</h2>
+                <p class="text-gray-500 text-sm">See and respond to customer feedback</p>
             </a>
 
-            <!-- Card 5 -->
             <a href="{{ url_for('vendor.support') }}"
-                class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition duration-300 block">
-                <div class="flex items-center space-x-4">
-                    <div class="bg-blue-100 p-3 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-700" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-800">Support</h2>
-                        <p class="text-gray-500 text-sm">Contact Vendora support for help</p>
-                    </div>
+                class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-start">
+                <div class="flex items-center justify-center bg-blue-50 text-blue-700 rounded-xl p-3 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" />
+                    </svg>
                 </div>
+                <h2 class="text-lg font-semibold text-gray-800 mb-1">Support</h2>
+                <p class="text-gray-500 text-sm">Get help from the Vendora support team</p>
             </a>
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<!-- Page-specific JavaScript -->
 {% endblock %}

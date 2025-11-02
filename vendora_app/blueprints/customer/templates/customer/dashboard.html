@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Customer Dashboard | Vendora{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-background px-4 py-12 flex flex-col items-center">
+    <div class="w-full max-w-6xl bg-surface rounded-2xl shadow-lg border border-gray-200 p-8 sm:p-10">
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-200 pb-4 mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    Welcome, {{ current_user.customer_profile.full_name }} 👋
+                </h1>
+                <p class="text-secondary mt-1">
+                    Manage your appointments and discover trusted vendors.
+                </p>
+            </div>
+            <a href="{{ url_for('auth.logout') }}"
+                class="mt-4 sm:mt-0 inline-block bg-primary text-white px-5 py-2.5 rounded-lg font-medium hover:bg-blue-800 transition duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50">
+                Logout
+            </a>
+        </div>
+
+        <!-- Profile Summary -->
+        <div class="bg-gray-50 rounded-xl border border-gray-200 p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Profile</h2>
+            <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+                <p><span class="font-medium text-secondary">Full Name:</span> {{ current_user.customer_profile.full_name
+                    }}</p>
+                <p><span class="font-medium text-secondary">Phone:</span> {{ current_user.customer_profile.phone }}</p>
+                <p><span class="font-medium text-secondary">Address:</span> {{ current_user.customer_profile.address }}
+                </p>
+                <p><span class="font-medium text-secondary">Member Since:</span> {{ current_user.created_at.strftime('%B
+                    %Y') if current_user.created_at else '—' }}</p>
+            </div>
+        </div>
+
+        <!-- Past Appointments Section -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Your Appointments</h2>
+
+            {% if appointments %}
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {% for appt in appointments %}
+                <div class="bg-white rounded-xl shadow-md border border-gray-200 p-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                            {{ appt.vendor.vendor_profile.shop_name }}
+                        </h3>
+                        <p class="text-secondary text-sm mb-1">{{ appt.vendor.vendor_profile.business_type }}</p>
+                        <p class="text-gray-600 text-sm mb-2">
+                            {{ appt.vendor.vendor_profile.shop_address }}
+                        </p>
+                        <p class="text-gray-700 text-sm">
+                            <span class="font-medium">Date:</span> {{ appt.date.strftime('%d %B %Y, %I:%M %p') }}
+                        </p>
+                        <p class="text-gray-700 text-sm">
+                            <span class="font-medium">Status:</span>
+                            <span
+                                class="{% if appt.status == 'Approved' %}text-green-600{% elif appt.status == 'Pending' %}text-yellow-600{% else %}text-red-600{% endif %}">
+                                {{ appt.status }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center text-gray-500 border border-dashed border-gray-300 rounded-xl p-8 bg-white/50">
+                You haven’t booked any appointments yet. Start by exploring vendors below!
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Vendor List Section -->
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Available Vendors</h2>
+
+            {% if vendors %}
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {% for vendor in vendors %}
+                <div class="bg-white rounded-xl shadow-md border border-gray-200 p-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-1">{{ vendor.vendor_profile.shop_name }}</h3>
+                        <p class="text-secondary text-sm mb-2">{{ vendor.vendor_profile.business_type }}</p>
+                        <p class="text-gray-600 text-sm mb-3">{{ vendor.vendor_profile.shop_address }}</p>
+                    </div>
+                    <form action="{{ url_for('customer.book_appointment', vendor_id=vendor.uid) }}" method="POST">
+                        <button type="submit"
+                            class="w-full py-2 mt-3 bg-primary text-white font-medium rounded-lg hover:bg-blue-800 transition duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50">
+                            Book Appointment
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center text-gray-500 border border-dashed border-gray-300 rounded-xl p-8 bg-white/50">
+                No vendors available right now. Please check back later!
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

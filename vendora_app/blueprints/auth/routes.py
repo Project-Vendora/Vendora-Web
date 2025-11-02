@@ -1,4 +1,4 @@
-from flask import request, render_template, redirect, url_for, Blueprint, session
+from flask import request, render_template, redirect, url_for, Blueprint, session, flash
 from vendora_app.app import db, bcrypt
 
 from flask_login import login_user, logout_user, current_user, login_required
@@ -47,19 +47,42 @@ def signup():
     elif request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        role = request.form.get('role')
+        
 
-        hashed_password = bcrypt.generate_password_hash(password)
-        user = User(username =username, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
+    user = User.query.filter_by(username=username).first()
+
+    if not user:
+        #new user
+      hashed_password = bcrypt.generate_password_hash(password)
+      new_user = User(username =username, password=hashed_password)
+      if role == 'vendor':
+          new_user.is_vendor = True
+      else:
+          new_user.is_customer = True
+      db.session.add(new_user)
+      db.session.commit()
+      flash('Account created successfully! Please login.','Success')
         
-        user = User.query.filter(User.username == username).first()
-        
+    else:
+        #Already existing user
+        #checking password
         if bcrypt.check_password_hash(user.password,password):
-            login_user(user)
-            return redirect(url_for('customer.vendors'))
+            if role == 'vendor' and not user.is_vendor:
+                user.is_vendor = True
+                db.session.commit()
+                flash('You are now also Registered as a vendor!','success')
+            elif role == 'customer' and not user.is_customer:
+                user.is_customer = True
+                db.session.commit()
+                flash('You are now also registered as a Customer!', 'success')
+            else:
+                flash(f'You are already registered as a {role}','info')
         else:
-            return 'Failed'
+            flash('Incorrect password for this username.','danger')
+        
+    return redirect(url_for('auth.login'))
+        
         
         
         #return redirect(url_for('auth.login'))
@@ -71,15 +94,43 @@ def login():
     elif request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        role = request.form.get('role')
+        
 
-        
+        # Authentication check
         user = User.query.filter(User.username == username).first()
+        if not user or not bcrypt.check_password_hash(user.password, password):
+            flash('Invalid username or password','danger')
+            return redirect(url_for('auth.login'))
         
-        if bcrypt.check_password_hash(user.password,password):
-            login_user(user)
-            return redirect(url_for('customer.vendors'))
-        else:
-            return 'Failed'
+        #check if the user has selscted a valid role
+        if role == 'vendor' and not user.is_vendor:
+            flash('You are not registered as a vendor.','danger')
+            return redirect(url_for('auth.signup'))
+        elif role =='customer' and not user.is_customer:
+            flash('You are not registered as a customer.','danger')
+            return redirect(url_for('auth.signup'))
+        
+        # All good -> Login and Redirect
+        login_user(user)
+        user.last_role = role
+        db.session.commit()
+        
+        if role == 'customer':
+            if not user.customer_profile:
+                flash('Please complete your customer profile.','info')
+                return redirect(url_for('customer.profile_setup'))
+            else:
+                return redirect(url_for('customer.dashboard'))
+        
+        elif role =='vendor':
+            if not user.vendor_profile:
+                flash('Please complete your vendor profile.','info')
+                return redirect(url_for('vendor.profile_setup'))
+            else:
+                return redirect(url_for('vendor.dashboard'))
+        
+            
 
 @auth.route('/logout')
 def logout():
