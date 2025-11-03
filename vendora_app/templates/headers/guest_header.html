@@ -1,0 +1,21 @@
+<header class="bg-white shadow-xl sticky top-0 z-50 border-b border-gray-200">
+    <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <!-- Logo with bolder font and primary color -->
+        <a href="{{ url_for('core.index') }}" class="text-3xl font-extrabold text-primary">
+            Vendora
+        </a>
+        <div class="flex items-center space-x-4 sm:space-x-6">
+            <!-- Navigation link hidden on small screens -->
+            <a href="{{ url_for('core.index') }}"
+                class="text-secondary hover:text-primary transition duration-300 ease-in-out font-medium hidden sm:inline-block">
+                Look for Vendor
+            </a>
+
+            <!-- Button with rounded-full shape, shadow, and scale hover effect -->
+            <a href="{{ url_for('auth.index')}}"
+                class="bg-primary text-white font-semibold py-2 px-5 rounded-full shadow-lg hover:bg-blue-600 transition duration-300 ease-in-out transform hover:scale-105">
+                Login / Sign Up
+            </a>
+        </div>
+    </nav>
+</header>

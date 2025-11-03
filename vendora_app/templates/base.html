@@ -55,54 +55,17 @@
     <!-- Header Section -->
     {% block header_content %}
     <!-- Enhanced shadow and separation -->
-    {% if current_user.is_authenticated %}
-    <header class="bg-white shadow-xl sticky top-0 z-50 border-b border-gray-200">
-        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <!-- Logo with bolder font and primary color -->
-            <a href="{{ url_for('core.index') }}" class="text-3xl font-extrabold text-primary">
-                Vendora
-            </a>
-            <div class="flex items-center space-x-4 sm:space-x-6">
-                <!-- Navigation link hidden on small screens -->
-                <a href="{{ url_for('customer.vendors') }}"
-                    class="text-secondary hover:text-primary transition duration-300 ease-in-out font-medium hidden sm:inline-block">
-                    Look for Vendor
-                </a>
-                <a href="{{ url_for('auth.logout') }}"
-                    class="bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg shadow-sm hover:bg-gray-200 transition duration-200">
-                    Logout
-                </a>
-                <a href="{{url_for('customer.dashboard')}}"><span
-                        class="bg-primary/10 text-primary font-medium py-2 px-4 rounded-lg shadow-sm hover:bg-primary/20 transition duration-200">
-                        {{ current_user.username }}
-                    </span></a>
-            </div>
+    {% if not current_user.is_authenticated %}
+    {% include 'headers/guest_header.html' %}
 
-        </nav>
-    </header>
+    {% elif current_user.last_role == 'customer' %}
+    {% include 'headers/user_header.html' %}
 
-    {% else %}
-    <header class="bg-white shadow-xl sticky top-0 z-50 border-b border-gray-200">
-        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <!-- Logo with bolder font and primary color -->
-            <a href="{{ url_for('core.index') }}" class="text-3xl font-extrabold text-primary">
-                Vendora
-            </a>
-            <div class="flex items-center space-x-4 sm:space-x-6">
-                <!-- Navigation link hidden on small screens -->
-                <a href="{{ url_for('core.index') }}"
-                    class="text-secondary hover:text-primary transition duration-300 ease-in-out font-medium hidden sm:inline-block">
-                    Look for Vendor
-                </a>
+    {% elif current_user.last_role == 'vendor' %}
+    {% include 'headers/user_header.html' %}
 
-                <!-- Button with rounded-full shape, shadow, and scale hover effect -->
-                <a href="{{ url_for('auth.index')}}"
-                    class="bg-primary text-white font-semibold py-2 px-5 rounded-full shadow-lg hover:bg-blue-600 transition duration-300 ease-in-out transform hover:scale-105">
-                    Login / Sign Up
-                </a>
-            </div>
-        </nav>
-    </header>
+
+
     {% endif %}
 
 
@@ -178,7 +141,33 @@
             </p>
         </div>
     </footer>
-    {% endblock %} {% block scripts %}{% endblock %}
+    {% endblock %}
+    {% block scripts %}
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        });
+
+        backdrop.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        });
+    </script>
+
+
+
+    {% endblock %}
 </body>
 
 </html>
