@@ -43,6 +43,9 @@ def dashboard():
     if current_user.is_vendor != True:
         return "Access denied", 403
     
+    """if current_user.last_role == 'customer':
+        return "Access denied", 403"""
+    
     vendor = current_user.vendor_profile
     return render_template('vendor/dashboard.html',vendor=vendor)
 
