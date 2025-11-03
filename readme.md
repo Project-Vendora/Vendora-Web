@@ -1,2 +1,1 @@
-# Vendora 
-Connecting Vendors
+# Vendora
