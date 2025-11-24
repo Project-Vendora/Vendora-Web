@@ -1,2 +1,2 @@
 # Vendora
-Helps Vendor Connect 
+Helps Vendor Connect to customers
